@@ -1,7 +1,7 @@
 {
   "name": "bx24-api",
   "description": "bitrix24 js library for use in npm",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "index.js",
   "keywords": [
     "bitrix",

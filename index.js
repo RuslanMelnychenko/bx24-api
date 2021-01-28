@@ -1,4 +1,4 @@
-import loadScript from './loadscript'
+import scriptLoader from './loadscript'
 
 const URL_SCRIPT = "//api.bitrix24.com/api/v1/"
 
@@ -9,7 +9,7 @@ export const isInit = () => initialized;
 window.BX24 = {}
 
 function load() {
-    return loadScript(URL_SCRIPT)
+    return scriptLoader(URL_SCRIPT)
 }
 
 /**
@@ -39,7 +39,6 @@ function installFinish() {
  *     // Some actions
  *     done();
  * })
- * @requires
  */
 export async function install() {
     await load()
