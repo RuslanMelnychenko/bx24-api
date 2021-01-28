@@ -416,6 +416,45 @@ export const im = {
     }
 }
 
+export const placement = {
+    /**
+     * @returns {Promise<Object>}
+     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/placement_info.php}
+     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+     */
+    async info() {
+        await init()
+        return window.BX24.placement.info()
+    },
+    /**
+     * @returns {Promise<*>}
+     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+     */
+    async getInterface() {
+        await init()
+        await new Promise(resolve => window.BX24.placement.getInterface(resolve))
+    },
+    /**
+     * @param {String} command
+     * @param {Object} [parameters={}]
+     * @returns {Promise<*>}
+     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+     */
+    async call(command, parameters) {
+        await init()
+        await new Promise(resolve => window.BX24.placement.call(command, parameters || {}, resolve))
+    },
+    /**
+     * @param {String} event
+     * @returns {Promise<*>}
+     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+     */
+    async bindEvent(event) {
+        await init()
+        await new Promise(resolve => window.BX24.placement.bindEvent(event, resolve))
+    }
+}
+
 export default {
     isInit,
     init,
@@ -450,5 +489,6 @@ export default {
     unbind,
     getScrollSize,
     loadScript,
-    im
+    im,
+    placement
 }
