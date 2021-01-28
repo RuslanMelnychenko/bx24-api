@@ -1,5 +1,5 @@
 {
-  "name": "bx24-library",
+  "name": "bx24-api",
   "description": "bitrix24 js library for CLI",
   "version": "1.0.0",
   "main": "index.js",
