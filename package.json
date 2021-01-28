@@ -1,0 +1,22 @@
+{
+  "name": "bx24-library",
+  "version": "1.0.0",
+  "description": "bitrix24 js library for CLI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bitrix",
+    "bitrix24",
+    "api",
+    "library",
+    "js"
+  ],
+  "author": "Ruslan Melnychenko",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/aSpectro/bitrix24-vue.git"
+  }
+}
