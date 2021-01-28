@@ -1,6 +1,6 @@
 {
   "name": "bx24-api",
-  "description": "bitrix24 js library for CLI",
+  "description": "bitrix24 js library for use in npm",
   "version": "1.0.0",
   "main": "index.js",
   "keywords": [
@@ -16,5 +16,11 @@
     "type": "git",
     "url": "https://github.com/RuslanMelnychenko/bx24-api.git"
   },
-  "license": "ISC"
+  "homepage": "https://github.com/RuslanMelnychenko/bx24-api",
+  "license": "ISC",
+  "files": [
+    "*.js",
+    "*.json",
+    "*.md"
+  ]
 }
