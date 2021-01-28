@@ -1,7 +1,12 @@
 # bx24-api
 This library loading script `https://api.bitrix24.com/api/v1/` and instead of callback use Promise.
 
-# Use
+## Installation
+```
+npm install bx24-api
+```
+
+## Use
 
 ```javascript
     import BX24 from 'bx24-api'
