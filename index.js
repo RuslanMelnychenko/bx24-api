@@ -14,11 +14,17 @@ export const throwOn = (enable) => throwEnable = !!enable;
 
 const handlerResult = (result) => {
     if(throwEnable) {
-        if(Array.isArray(result))
-            if(result.findIndex(r => !!r.answer.error) > -1)
+        if(Array.isArray(result)) {
+            let errors = result.filter(r => !!r.answer.error)
+            if(errors.length) {
+                console.error(errors.map(e => e.answer.error), result)
                 throw result
-        else if(!!result.answer.error)
+            }
+        }
+        else if(!!result.answer.error) {
+            console.error(result.answer.error, result)
             throw result
+        }
     }
     return result
 }
