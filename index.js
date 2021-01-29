@@ -24,9 +24,22 @@ export async function init() {
 }
 
 /**
+ * ! Use this function after init() or install()
  * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/installFinish.php}
+ * @see init
+ * @see install
+ * @example With init()
+ * init().then(() => {
+ *     // ...
+ *     installFinish();
+ * })
+ * @example With install()
+ * install().then(() => {
+ *     // ...
+ *     installFinish();
+ * })
  */
-function installFinish() {
+export function installFinish() {
     window.BX24.installFinish()
 }
 /**
@@ -34,6 +47,7 @@ function installFinish() {
  * @returns {Promise<installFinish>}
  * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/install.php}
  * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/installFinish.php}
+ * @see installFinish
  * @example
  * install().then((done) => {
  *     // Some actions
@@ -459,6 +473,7 @@ export default {
     isInit,
     init,
     install,
+    installFinish,
     getAuth,
     refreshAuth,
     callMethod,
