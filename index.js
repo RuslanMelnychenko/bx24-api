@@ -3,6 +3,25 @@ import scriptLoader from './loadscript'
 const URL_SCRIPT = "//api.bitrix24.com/api/v1/"
 
 let initialized = false
+let throwEnable = false
+
+/**
+ * Generate throw when callMethod return error
+ * @param {Boolean} enable
+ * @returns {boolean}
+ */
+export const throwOn = (enable) => throwEnable = !!enable;
+
+const handlerResult = (result) => {
+    if(throwEnable) {
+        if(Array.isArray(result))
+            if(result.findIndex(r => !!r.answer.error) > -1)
+                throw result
+        else if(!!result.answer.error)
+            throw result
+    }
+    return result
+}
 
 export const isInit = () => initialized;
 
@@ -86,7 +105,7 @@ export async function refreshAuth() {
  */
 export async function callMethod(method, params) {
     await init()
-    return await new Promise(resolve => window.BX24.callMethod(method, params, resolve))
+    return handlerResult(await new Promise(resolve => window.BX24.callMethod(method, params, resolve)))
 }
 
 /**
@@ -97,7 +116,7 @@ export async function callMethod(method, params) {
  */
 export async function callBatch(calls, bHaltOnError) {
     await init()
-    return await new Promise(resolve => window.BX24.callBatch(calls, resolve, bHaltOnError))
+    return handlerResult(await new Promise(resolve => window.BX24.callBatch(calls, resolve, bHaltOnError)))
 }
 
 /**
@@ -109,7 +128,7 @@ export async function callBatch(calls, bHaltOnError) {
  */
 export async function callBind(event, handler, auth_type) {
     await init()
-    return await new Promise(resolve => window.BX24.callBind(event, handler, auth_type, resolve))
+    return handlerResult(await new Promise(resolve => window.BX24.callBind(event, handler, auth_type, resolve)))
 }
 
 /**
@@ -121,7 +140,7 @@ export async function callBind(event, handler, auth_type) {
  */
 export async function callUnbind(event, handler, auth_type) {
     await init()
-    return await new Promise(resolve => window.BX24.callUnbind(event, handler, auth_type, resolve))
+    return handlerResult(await new Promise(resolve => window.BX24.callUnbind(event, handler, auth_type, resolve)))
 }
 
 export const userOption = {
