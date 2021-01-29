@@ -124,7 +124,7 @@ export async function callUnbind(event, handler, auth_type) {
     return await new Promise(resolve => window.BX24.callUnbind(event, handler, auth_type, resolve))
 }
 
-export const userOptions = {
+export const userOption = {
     /**
      * @param {String} name
      * @param {String} value
