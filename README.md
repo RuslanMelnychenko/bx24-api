@@ -1,5 +1,5 @@
 # bx24-api
-This library loading script `https://api.bitrix24.com/api/v1/` and instead of callback use Promise.
+This library loading script `api.bitrix24.com/api/v1/` and instead of callback use Promise.
 
 ## Installation
 ```
@@ -9,14 +9,30 @@ npm install bx24-api
 ## Use
 
 ```javascript
-    import BX24 from 'bx24-api'
-    
-    BX24.init().then(() => {
-        console.log('init')
-        BX24.callMethod()
-    })
+import BX24 from 'bx24-api'
+
+let leads = [];
+BX24.callMethod('crm.lead.get').then(data => {
+    leads = data.answer.result
+})
 ```
 
-And you can use all function from [Documentation](https://dev.1c-bitrix.ru/rest_help/js_library/index.php) 
+You don't need to call `init()` before using other functions, because `init()` is always called at the beginning of these functions, except `install()`
 
-P.S: At the beginning of each function, the `BX24.init()` function is executed, except `BX.install()`.
+All functions duplicate from [Documentation](https://dev.1c-bitrix.ru/rest_help/js_library/index.php) 
+
+## Generate error
+
+You can turn on generate error when `callMethod`, `callBatch`, `callBind` and `callUnBind` return result with error.
+
+```javascript
+BX24.throwOn(true)
+```
+
+```javascript
+BX24.callMethod('crm.lead.get').then(data => {
+    leads = data.answer.result
+}).catch(data => {
+    // ...
+})
+```
