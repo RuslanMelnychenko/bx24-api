@@ -480,7 +480,7 @@ export default {
     callBatch,
     callBind,
     callUnbind,
-    userOptions,
+    userOption,
     appOption,
     selectUser,
     selectUsers,
