@@ -1,7 +1,7 @@
 {
   "name": "bx24-api",
-  "description": "bitrix24 js library for use in npm",
-  "version": "1.2.0",
+  "description": "Interface for using official Bitrix JavaScript library",
+  "version": "1.2.1",
   "main": "index.js",
   "keywords": [
     "bitrix",
@@ -15,6 +15,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/RuslanMelnychenko/bx24-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RuslanMelnychenko/bx24-api/issues"
   },
   "homepage": "https://github.com/RuslanMelnychenko/bx24-api",
   "license": "ISC",

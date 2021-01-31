@@ -6,27 +6,26 @@ let initialized = false
 let throwEnable = false
 
 /**
- * Generate throw when callMethod return error
+ * Throw mode: Throw an exception when function return result with error
  * @param {Boolean} enable
  * @returns {boolean}
  */
 export const throwOn = (enable) => throwEnable = !!enable;
 
 const handlerResult = (result) => {
-    if(throwEnable) {
-        if(Array.isArray(result)) {
-            let errors = result.filter(r => !!r.answer.error)
-            if(errors.length) {
-                console.error(errors.map(e => e.answer.error), result)
-                throw result
-            }
-        }
-        else if(!!result.answer.error) {
-            console.error(result.answer.error, result)
-            throw result
-        }
+  if (throwEnable) {
+    if (Array.isArray(result)) {
+      let errors = result.filter(r => !!r.answer.error)
+      if (errors.length) {
+        console.error(errors.map(e => e.answer.error), result)
+        throw result
+      }
+    } else if (!!result.answer.error) {
+      console.error(result.answer.error, result)
+      throw result
     }
-    return result
+  }
+  return result
 }
 
 export const isInit = () => initialized;
@@ -34,23 +33,25 @@ export const isInit = () => initialized;
 window.BX24 = {}
 
 function load() {
-    return scriptLoader(URL_SCRIPT)
+  return scriptLoader(URL_SCRIPT)
 }
 
 /**
- * Initializing
+ * Initializing script
  * @returns {Promise<{}>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/init.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/system/init.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/init.php}
  */
 export async function init() {
-    await load()
-    initialized = true
-    await new Promise(resolve => window.BX24.init(resolve))
+  await load()
+  initialized = true
+  await new Promise(resolve => window.BX24.init(resolve))
 }
 
 /**
  * ! Use this function after init() or install()
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/installFinish.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/system/installFinish.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/installFinish.php}
  * @see init
  * @see install
  * @example With init()
@@ -65,14 +66,16 @@ export async function init() {
  * })
  */
 export function installFinish() {
-    window.BX24.installFinish()
+  window.BX24.installFinish()
 }
+
 /**
- *
  * @returns {Promise<installFinish>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/install.php}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/installFinish.php}
  * @see installFinish
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/system/install.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/install.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/system/installFinish.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/installFinish.php}
  * @example
  * install().then((done) => {
  *     // Some actions
@@ -80,49 +83,53 @@ export function installFinish() {
  * })
  */
 export async function install() {
-    await load()
-    await new Promise(resolve => window.BX24.install(resolve))
-    return installFinish
+  await load()
+  await new Promise(resolve => window.BX24.install(resolve))
+  return installFinish
 }
 
 /**
  * @returns {Promise<Boolean|Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/getAuth.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/system/getAuth.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/getAuth.php}
  */
 export async function getAuth() {
-    await init()
-    return window.BX24.getAuth()
+  await init()
+  return window.BX24.getAuth()
 }
 
 /**
  * @returns {Promise<Boolean|Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/refreshAuth.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/system/refreshAuth.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/system/refreshAuth.php}
  */
 export async function refreshAuth() {
-    await init()
-    return await new Promise(resolve => window.BX24.refreshAuth(resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.refreshAuth(resolve))
 }
 
 /**
  * @param {String} method
  * @param {Object} params
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/callMethod.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/callMethod.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/callMethod.php}
  */
 export async function callMethod(method, params) {
-    await init()
-    return handlerResult(await new Promise(resolve => window.BX24.callMethod(method, params, resolve)))
+  await init()
+  return handlerResult(await new Promise(resolve => window.BX24.callMethod(method, params, resolve)))
 }
 
 /**
  * @param {Array|Object} calls
  * @param {Boolean} [bHaltOnError=false]
  * @returns {Promise<Array|Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/callBatch.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/callBatch.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/callBatch.php}
  */
 export async function callBatch(calls, bHaltOnError) {
-    await init()
-    return handlerResult(await new Promise(resolve => window.BX24.callBatch(calls, resolve, bHaltOnError)))
+  await init()
+  return handlerResult(await new Promise(resolve => window.BX24.callBatch(calls, resolve, bHaltOnError)))
 }
 
 /**
@@ -130,11 +137,12 @@ export async function callBatch(calls, bHaltOnError) {
  * @param {String} handler
  * @param {Number} [auth_type]
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/bx24.callbind.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/bx24.callbind.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/bx24.callbind.php}
  */
 export async function callBind(event, handler, auth_type) {
-    await init()
-    return handlerResult(await new Promise(resolve => window.BX24.callBind(event, handler, auth_type, resolve)))
+  await init()
+  return handlerResult(await new Promise(resolve => window.BX24.callBind(event, handler, auth_type, resolve)))
 }
 
 /**
@@ -142,55 +150,60 @@ export async function callBind(event, handler, auth_type) {
  * @param {String} handler
  * @param {Number} [auth_type]
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/bx24_callunbind.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/bx24_callunbind.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/bx24_callunbind.php}
  */
 export async function callUnbind(event, handler, auth_type) {
-    await init()
-    return handlerResult(await new Promise(resolve => window.BX24.callUnbind(event, handler, auth_type, resolve)))
+  await init()
+  return handlerResult(await new Promise(resolve => window.BX24.callUnbind(event, handler, auth_type, resolve)))
 }
 
 export const userOption = {
-    /**
-     * @param {String} name
-     * @param {String} value
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/userOption.php}
-     */
-    async set(name, value) {
-        await init()
-        window.BX24.userOption.set(name, value)
-    },
-    /**
-     * @param {String} name
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/userOption.php}
-     */
-    async get(name) {
-        await init()
-        window.BX24.userOption.get(name)
-    }
+  /**
+   * @param {String} name
+   * @param {String} value
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/settings/userOption.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/userOption.php}
+   */
+  async set(name, value) {
+    await init()
+    window.BX24.userOption.set(name, value)
+  },
+  /**
+   * @param {String} name
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/settings/userOption.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/userOption.php}
+   */
+  async get(name) {
+    await init()
+    window.BX24.userOption.get(name)
+  }
 }
 
 export const appOption = {
-    /**
-     * @param {String} name
-     * @param {String} value
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/appOption.php}
-     */
-    async set(name, value) {
-        await init()
-        window.BX24.appOption.set(name, value)
-    },
-    /**
-     * @param {String} name
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/appOption.php}
-     */
-    async get(name) {
-        await init()
-        window.BX24.appOption.get(name)
-    }
+  /**
+   * @param {String} name
+   * @param {String} value
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/settings/appOption.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/appOption.php}
+   */
+  async set(name, value) {
+    await init()
+    window.BX24.appOption.set(name, value)
+  },
+  /**
+   * @param {String} name
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/settings/appOption.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/appOption.php}
+   */
+  async get(name) {
+    await init()
+    window.BX24.appOption.get(name)
+  }
 }
 
 /**
@@ -201,30 +214,33 @@ export const appOption = {
 
 /**
  * @returns {Promise<Entity>} User
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectUser.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/dialog/selectUser.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectUser.php}
  */
 export async function selectUser() {
-    await init()
-    return await new Promise(resolve => window.BX24.selectUser(resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.selectUser(resolve))
 }
 
 /**
  * @returns {Promise<[Entity]>} Users
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectUsers.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/dialog/selectUsers.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectUsers.php}
  */
 export async function selectUsers() {
-    await init()
-    return await new Promise(resolve => window.BX24.selectUsers(resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.selectUsers(resolve))
 }
 
 /**
  * @param {Array} [value=[]]
  * @returns {Promise<[Entity]>} Accesses
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectAccess.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/dialog/selectAccess.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectAccess.php}
  */
 export async function selectAccess(value) {
-    await init()
-    return await new Promise(resolve => window.BX24.selectAccess(value || [], resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.selectAccess(value || [], resolve))
 }
 
 /**
@@ -232,144 +248,159 @@ export async function selectAccess(value) {
  * @param {Array<String>} params.entityType
  * @param {Boolean} params.multiple
  * @param {Array|Object} params.value
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectCRM.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/dialog/selectCRM.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/dialog/selectCRM.php}
  */
 export async function selectCRM(params) {
-    await init()
-    return await new Promise(resolve => window.BX24.selectCRM(params, resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.selectCRM(params, resolve))
 }
 
 /**
  * @returns {Promise<Boolean>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/isAdmin.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/isAdmin.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/isAdmin.php}
  */
 export async function isAdmin() {
-    await init()
-    return window.BX24.isAdmin()
+  await init()
+  return window.BX24.isAdmin()
 }
 
 /**
  * @returns {Promise<String>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/getLang.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/getLang.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/getLang.php}
  */
 export async function getLang() {
-    await init()
-    return window.BX24.getLang()
+  await init()
+  return window.BX24.getLang()
 }
 
 /**
  * @param {Number} width
  * @param {Number} height
  * @returns {Promise<*>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/resizeWindow.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/resizeWindow.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/resizeWindow.php}
  */
 export async function resizeWindow(width, height) {
-    await init()
-    return await new Promise(resolve => window.BX24.resizeWindow(width, height, resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.resizeWindow(width, height, resolve))
 }
 
 /**
  * @returns {Promise<*>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/fitWindow.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/fitWindow.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/fitWindow.php}
  */
 export async function fitWindow() {
-    await init()
-    return await new Promise(resolve => window.BX24.fitWindow(resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.fitWindow(resolve))
 }
 
 /**
  * @returns {Promise<*>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/reloadWindow.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/reloadWindow.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/reloadWindow.php}
  */
 export async function reloadWindow() {
-    await init()
-    return await new Promise(resolve => window.BX24.reloadWindow(resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.reloadWindow(resolve))
 }
 
 /**
  * @param {String} title
  * @returns {Promise<*>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/setTitle.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/setTitle.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/setTitle.php}
  */
 export async function setTitle(title) {
-    await init()
-    return await new Promise(resolve => window.BX24.setTitle(title, resolve))
+  await init()
+  return await new Promise(resolve => window.BX24.setTitle(title, resolve))
 }
 
 /**
  * @returns {Promise<void>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/ready.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/ready.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/ready.php}
  */
 export async function ready() {
-    await init()
-    await new Promise(resolve => window.BX24.ready(resolve))
+  await init()
+  await new Promise(resolve => window.BX24.ready(resolve))
 }
 
 /**
  * @returns {Promise<Boolean>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/isReady.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/isReady.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/isReady.php}
  */
 export async function isReady() {
-    await init()
-    return window.BX24.isReady()
+  await init()
+  return window.BX24.isReady()
 }
 
 /**
  * @param {Function} func
  * @param {Object} thisObject
  * @returns {Promise<Function>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/proxy.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/proxy.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/proxy.php}
  */
 export async function proxy(func, thisObject) {
-    await init()
-    return window.BX24.proxy(func, thisObject)
+  await init()
+  return window.BX24.proxy(func, thisObject)
 }
 
 /**
  * @returns {Promise<*>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/closeapplication.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/closeapplication.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/closeapplication.php}
  */
 export async function closeApplication() {
-    await init()
-    await new Promise(resolve => window.BX24.closeApplication(resolve))
+  await init()
+  await new Promise(resolve => window.BX24.closeApplication(resolve))
 }
 
 /**
  * @returns {Promise<*>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/getDomain.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/getDomain.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/getDomain.php}
  */
 export async function getDomain() {
-    await init()
-    return window.BX24.getDomain()
+  await init()
+  return window.BX24.getDomain()
 }
 
 /**
  * @param {Object} [parameters={}]
  * @returns {Promise<*>} resolve when app will be closed
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/openApplication.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/openApplication.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/openApplication.php}
  */
 export async function openApplication(parameters) {
-    await init()
-    await new Promise(resolve => window.BX24.openApplication(parameters || {}, resolve))
+  await init()
+  await new Promise(resolve => window.BX24.openApplication(parameters || {}, resolve))
 }
 
 /**
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/proxyContext.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/proxyContext.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/proxyContext.php}
  */
 export async function proxyContext() {
-    await init()
-    return window.BX24.proxyContext()
+  await init()
+  return window.BX24.proxyContext()
 }
 
 /**
  * @param {Number} scroll
  * @returns {Promise<*>} resolve when app will be closed
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/scrollparentwindow.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/scrollparentwindow.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/scrollparentwindow.php}
  */
 export async function scrollParentWindow(scroll) {
-    await init()
-    await new Promise(resolve => window.BX24.scrollParentWindow(scroll, resolve))
+  await init()
+  await new Promise(resolve => window.BX24.scrollParentWindow(scroll, resolve))
 }
 
 /**
@@ -377,11 +408,12 @@ export async function scrollParentWindow(scroll) {
  * @param {String} eventName
  * @param {Function} func
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/bind.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/bind.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/bind.php}
  */
 export async function bind(element, eventName, func) {
-    await init()
-    return window.BX24.bind(element, eventName, func)
+  await init()
+  return window.BX24.bind(element, eventName, func)
 }
 
 /**
@@ -389,146 +421,158 @@ export async function bind(element, eventName, func) {
  * @param {String} eventName
  * @param {Function} func
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/unbind.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/unbind.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/unbind.php}
  */
 export async function unbind(element, eventName, func) {
-    await init()
-    return window.BX24.unbind(element, eventName, func)
+  await init()
+  return window.BX24.unbind(element, eventName, func)
 }
 
 /**
  * @returns {Promise<Object>}
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/getScrollSize.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/getScrollSize.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/getScrollSize.php}
  */
 export async function getScrollSize() {
-    await init()
-    return window.BX24.getScrollSize()
+  await init()
+  return window.BX24.getScrollSize()
 }
 
 /**
  * @param {Array|String} script
  * @returns {Promise<*>} resolve when app will be closed
- * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/loadScript.php}
+ * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/loadScript.php}
+ * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/loadScript.php}
  */
 export async function loadScript(script) {
-    await init()
-    await new Promise(resolve => window.BX24.loadScript(script, resolve))
+  await init()
+  await new Promise(resolve => window.BX24.loadScript(script, resolve))
 }
 
 export const im = {
-    /**
-     * @param userId
-     * @param {Boolean} [video=true]
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_callTo.php}
-     */
-    async callTo(userId, video) {
-        await init()
-        return window.BX24.im.callTo(userId, video)
-    },
-    /**
-     * @param {String} number
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_phoneTo.php}
-     */
-    async phoneTo(number) {
-        await init()
-        return window.BX24.im.phoneTo(number)
-    },
-    /**
-     * @param {String} dialogId
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_openMessenger.php}
-     */
-    async openMessenger(dialogId) {
-        await init()
-        return window.BX24.im.openMessenger(dialogId)
-    },
-    /**
-     * @param {String} dialogId
-     * @returns {Promise<void>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_openHistory.php}
-     */
-    async openHistory(dialogId) {
-        await init()
-        return window.BX24.im.openHistory(dialogId)
-    }
+  /**
+   * @param userId
+   * @param {Boolean} [video=true]
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/im_callTo.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_callTo.php}
+   */
+  async callTo(userId, video) {
+    await init()
+    return window.BX24.im.callTo(userId, video)
+  },
+  /**
+   * @param {String} number
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/im_phoneTo.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_phoneTo.php}
+   */
+  async phoneTo(number) {
+    await init()
+    return window.BX24.im.phoneTo(number)
+  },
+  /**
+   * @param {String} dialogId
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/im_openMessenger.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_openMessenger.php}
+   */
+  async openMessenger(dialogId) {
+    await init()
+    return window.BX24.im.openMessenger(dialogId)
+  },
+  /**
+   * @param {String} dialogId
+   * @returns {Promise<void>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/js_library/additional/im_openHistory.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/additional/im_openHistory.php}
+   */
+  async openHistory(dialogId) {
+    await init()
+    return window.BX24.im.openHistory(dialogId)
+  }
 }
 
 export const placement = {
-    /**
-     * @returns {Promise<Object>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/placement_info.php}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
-     */
-    async info() {
-        await init()
-        return window.BX24.placement.info()
-    },
-    /**
-     * @returns {Promise<*>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
-     */
-    async getInterface() {
-        await init()
-        await new Promise(resolve => window.BX24.placement.getInterface(resolve))
-    },
-    /**
-     * @param {String} command
-     * @param {Object} [parameters={}]
-     * @returns {Promise<*>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
-     */
-    async call(command, parameters) {
-        await init()
-        await new Promise(resolve => window.BX24.placement.call(command, parameters || {}, resolve))
-    },
-    /**
-     * @param {String} event
-     * @returns {Promise<*>}
-     * @see {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
-     */
-    async bindEvent(event) {
-        await init()
-        await new Promise(resolve => window.BX24.placement.bindEvent(event, resolve))
-    }
+  /**
+   * @returns {Promise<Object>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/application_embedding/application_embedding/placement_info.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/placement_info.php}
+   * @see EN {@link https://training.bitrix24.com/rest_help/application_embedding/application_embedding/index.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+   */
+  async info() {
+    await init()
+    return window.BX24.placement.info()
+  },
+  /**
+   * @returns {Promise<*>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/application_embedding/application_embedding/index.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+   */
+  async getInterface() {
+    await init()
+    await new Promise(resolve => window.BX24.placement.getInterface(resolve))
+  },
+  /**
+   * @param {String} command
+   * @param {Object} [parameters={}]
+   * @returns {Promise<*>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/application_embedding/application_embedding/index.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+   */
+  async call(command, parameters) {
+    await init()
+    await new Promise(resolve => window.BX24.placement.call(command, parameters || {}, resolve))
+  },
+  /**
+   * @param {String} event
+   * @returns {Promise<*>}
+   * @see EN {@link https://training.bitrix24.com/rest_help/application_embedding/application_embedding/index.php}
+   * @see RU {@link https://dev.1c-bitrix.ru/rest_help/application_embedding/application_embedding/index.php}
+   */
+  async bindEvent(event) {
+    await init()
+    await new Promise(resolve => window.BX24.placement.bindEvent(event, resolve))
+  }
 }
 
 export default {
-    isInit,
-    init,
-    install,
-    installFinish,
-    getAuth,
-    refreshAuth,
-    callMethod,
-    callBatch,
-    callBind,
-    callUnbind,
-    userOption,
-    appOption,
-    selectUser,
-    selectUsers,
-    selectAccess,
-    selectCRM,
-    isAdmin,
-    getLang,
-    resizeWindow,
-    fitWindow,
-    reloadWindow,
-    setTitle,
-    ready,
-    isReady,
-    proxy,
-    closeApplication,
-    getDomain,
-    openApplication,
-    proxyContext,
-    scrollParentWindow,
-    bind,
-    unbind,
-    getScrollSize,
-    loadScript,
-    im,
-    placement
+  isInit,
+  init,
+  install,
+  installFinish,
+  getAuth,
+  refreshAuth,
+  callMethod,
+  callBatch,
+  callBind,
+  callUnbind,
+  userOption,
+  appOption,
+  selectUser,
+  selectUsers,
+  selectAccess,
+  selectCRM,
+  isAdmin,
+  getLang,
+  resizeWindow,
+  fitWindow,
+  reloadWindow,
+  setTitle,
+  ready,
+  isReady,
+  proxy,
+  closeApplication,
+  getDomain,
+  openApplication,
+  proxyContext,
+  scrollParentWindow,
+  bind,
+  unbind,
+  getScrollSize,
+  loadScript,
+  im,
+  placement
 }
