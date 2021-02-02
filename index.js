@@ -191,7 +191,7 @@ export const appOption = {
    * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/settings/appOption.php}
    */
   async set(name, value) {
-    if(!(await isAdmin())) throw "User is not admin"
+    if (!(await isAdmin())) throw "User is not admin"
     return await new Promise(resolve => window.BX24.appOption.set(name, value, resolve))
   },
   /**
