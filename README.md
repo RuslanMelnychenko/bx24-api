@@ -2,6 +2,8 @@
 
 This library is an improved interface for working with the [official Bitrix JavaScript library](https://training.bitrix24.com/rest_help/js_library/index.php). 
 
+> The library cannot be used for external applications and webhooks.
+
 Advantage:
 - [x] Promise is used instead of callback in functions.
 - [x] Auto loading and initialize the official Bitrix library when calling any function.
@@ -9,6 +11,8 @@ Advantage:
 ---
 
 Это библиотека представляет собой улучшений интерфейс для работы с [официальной JavaScript библитекой Bitrix](https://dev.1c-bitrix.ru/rest_help/js_library/index.php).
+
+> Для внешних приложений и вебхуков библиотека использоваться не может.
 
 Плюсы:
 - [x] Использование Promise вместо callback в функциях.
