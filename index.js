@@ -168,7 +168,7 @@ export const userOption = {
    */
   async set(name, value) {
     await init()
-    window.BX24.userOption.set(name, value)
+    return window.BX24.userOption.set(name, value)
   },
   /**
    * @param {String} name
@@ -178,7 +178,7 @@ export const userOption = {
    */
   async get(name) {
     await init()
-    window.BX24.userOption.get(name)
+    return window.BX24.userOption.get(name)
   }
 }
 
@@ -202,7 +202,7 @@ export const appOption = {
    */
   async get(name) {
     await init()
-    window.BX24.appOption.get(name)
+    return window.BX24.appOption.get(name)
   }
 }
 
