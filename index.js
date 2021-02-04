@@ -30,7 +30,8 @@ const handlerResult = (result) => {
 
 export const isInit = () => initialized;
 
-window.BX24 = {}
+if (!window.BX24)
+  window.BX24 = {}
 
 function load() {
   return scriptLoader(URL_SCRIPT)
