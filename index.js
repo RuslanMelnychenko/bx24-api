@@ -23,14 +23,14 @@ const handlerResult = (result) => {
 
   if (throwEnable) {
     if (Array.isArray(result)) {
-      let errors = result.filter(r => !!r.answer.error)
+      let errors = result.filter(r => !!r.error())
       if (errors.length) {
-        console.error(errors.map(e => e.answer.error), result)
+        console.error(errors.map(e => e.error()), result)
         throw result
       }
-    } else if (!!result.answer.error) {
-      console.error(result.answer.error, result)
-      throw result
+    } else if (!!result.error()) {
+      console.error(result.error(), result)
+      throw result.error()
     }
   }
   return result
