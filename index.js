@@ -13,6 +13,14 @@ let throwEnable = true
 export const throwOn = (enable) => throwEnable = !!enable;
 
 const handlerResult = (result) => {
+  const next = result.next
+  result.next = async function() {
+    if (this.more())
+      return handlerResult(await new Promise(resolve => next.call(this, resolve)))
+    else
+      return false
+  }
+
   if (throwEnable) {
     if (Array.isArray(result)) {
       let errors = result.filter(r => !!r.answer.error)
