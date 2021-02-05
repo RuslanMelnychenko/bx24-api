@@ -45,7 +45,53 @@ All function from [official library](https://training.bitrix24.com/rest_help/js_
 
 Все функции [официальной библиотеки](https://dev.1c-bitrix.ru/rest_help/js_library/index.php) дублированы под интерфейс данной библиотеки.
 
-## Throw exception mode / Режим генерации ошибок
+## Additions / Дополнения
+
+### Request next data chunk / Запрос следующей страницы данных
+
+`ajaxResult.next()` will return Promise like `callMethod`
+
+---
+
+`ajaxResult.next()` будет возращать Promise, как `callMethod`
+
+```javascript
+let lastCall = null
+let users = []
+callMethod('user.get').then(result => {
+  lastCall = result.more()? result: null
+  users.push(...result.data())
+})
+
+function nextPage() {
+  if(lastCall) {
+    lastCall.next().then(result => {
+      lastCall = result.more()? result: null
+      users.push(...result.data())
+    })
+  }
+}
+```
+
+### Import Large Data Batches / Выгрузка больших объемов данных
+
+Additional function `callMethodAll(method, params)` is designed to import large amounts of data. Based on advice in [the documentation](https://training.bitrix24.com/rest_help/rest_sum/start.php).
+
+> Supports only methods for calling the list of entities that have an `ID` parameter in their structure and support query parameters: `filter`, `order` and `select` 
+
+---
+
+Дополнительная функция `callMethodAll(method, params)` разработана для загрузки больших объемов данных. Основана на примере с [документации](https://dev.1c-bitrix.ru/rest_help/rest_sum/start.php).
+
+> Поддерживает только методы вызова списка сущностей которые имеют в своей структуре параметр `ID` и поддерживают параметры запроса: `filter`, `order`, `select`
+
+```javascript
+BX24.callMethodAll('crm.lead.get').then(result => {
+  // ...
+})
+```
+
+### Throw exception mode / Режим генерации ошибок
 
 You can turn on to throw an exception and errors will be thrown when `callMethod`, `callBatch`, `callBind` and `callUnBind` return result with error.
 
@@ -56,8 +102,8 @@ You can turn on to throw an exception and errors will be thrown when `callMethod
 ```javascript
 BX24.throwOn(true)
 
-BX24.callMethod('crm.lead.get').then(data => {
-    leads = data.answer.result
+BX24.callMethod('crm.lead.get').then(result => {
+    leads = result.data()
 }).catch(data => {
     // ...
 })
