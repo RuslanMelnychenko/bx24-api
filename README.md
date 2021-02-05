@@ -93,18 +93,21 @@ BX24.callMethodAll('crm.lead.get').then(result => {
 
 ### Throw exception mode / Режим генерации ошибок
 
-You can turn on to throw an exception and errors will be thrown when `callMethod`, `callBatch`, `callBind` and `callUnBind` return result with error.
+By default, if the functions `callMethod`, `callBatch`, `callBind` and `callUnBind` response returns with errors, then an error will be thrown.
+
+You can turn off throw errors `BX24.throwOn(false)`.
 
 ---
 
-Вы можете включить режим генерацию ошибок и тогда ошибки будут вызываться когда результаты `callMethod`, `callBatch`, `callBind` и `callUnBind` будут возвращать с ошибками.
+По дефолду если запросы функций `callMethod`, `callBatch`, `callBind` and `callUnBind` возвращают ответ с ошибкой будет вызываться throw.
+
+Вы можете выключить вызов ошибки `BX24.throwOn(false)`.
 
 ```javascript
-BX24.throwOn(true)
-
+// When throw on
 BX24.callMethod('crm.lead.get').then(result => {
     leads = result.data()
-}).catch(data => {
+}).catch(error => {
     // ...
 })
 ```
