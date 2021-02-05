@@ -3,7 +3,7 @@ import scriptLoader from './loadscript'
 const URL_SCRIPT = "//api.bitrix24.com/api/v1/"
 
 let initialized = false
-let throwEnable = false
+let throwEnable = true
 
 /**
  * Throw mode: Throw an exception when function return result with error
