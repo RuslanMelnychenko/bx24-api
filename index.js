@@ -12,6 +12,11 @@ let throwEnable = true
  */
 export const throwOn = (enable) => throwEnable = !!enable;
 
+/**
+ * @param {ajaxResult} result
+ * @returns {ajaxResult}
+ * @throws ajaxError
+ */
 const handlerResult = (result) => {
   const next = result.next
   result.next = async function() {
@@ -118,11 +123,28 @@ export async function refreshAuth() {
 }
 
 /**
+ * @typedef {Object} ajaxResult
+ * @property {Function<*>} data the function returning the REST method response as an array, an object or a scalar. Refer to the method descriptions for further information.
+ * @property {Function<ajaxError?>} error returns the error description if an error occurred, or false otherwise.
+ * @property {Function<Boolean>} more returns true if there is still data to fetch. Applicable to methods that return data.
+ * @property {Function<Number>} total returns the total number of data records. Applicable to methods that return data.
+ * @property {Function<Promise<ajaxResult|Boolean>>} next requests and returns the next data chunk.
+ */
+
+/**
+ * @typedef {Object} ajaxError
+ * @property {Function} getError
+ * @property {Function} getStatus
+ * @property {Function<String>} toString
+ */
+
+/**
  * @param {String} method
- * @param {Object} params
- * @returns {Promise<Object>}
+ * @param {Object} [params={}]
+ * @returns {Promise<ajaxResult>}
  * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/callMethod.php}
  * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/callMethod.php}
+ * @throws {ajaxError}
  */
 export async function callMethod(method, params) {
   await init()
@@ -132,9 +154,10 @@ export async function callMethod(method, params) {
 /**
  * @param {Array|Object} calls
  * @param {Boolean} [bHaltOnError=false]
- * @returns {Promise<Array|Object>}
+ * @returns {Promise<Array<ajaxResult>|Object<ajaxResult>>}
  * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/callBatch.php}
  * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/callBatch.php}
+ * @throws {ajaxError}
  */
 export async function callBatch(calls, bHaltOnError) {
   await init()
@@ -145,9 +168,10 @@ export async function callBatch(calls, bHaltOnError) {
  * @param {String} event
  * @param {String} handler
  * @param {Number} [auth_type]
- * @returns {Promise<Object>}
+ * @returns {Promise<ajaxResult>}
  * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/bx24.callbind.php}
  * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/bx24.callbind.php}
+ * @throws {ajaxError}
  */
 export async function callBind(event, handler, auth_type) {
   await init()
@@ -158,9 +182,10 @@ export async function callBind(event, handler, auth_type) {
  * @param {String} event
  * @param {String} handler
  * @param {Number} [auth_type]
- * @returns {Promise<Object>}
+ * @returns {Promise<ajaxResult>}
  * @see EN {@link https://training.bitrix24.com/rest_help/js_library/rest/bx24_callunbind.php}
  * @see RU {@link https://dev.1c-bitrix.ru/rest_help/js_library/rest/bx24_callunbind.php}
+ * @throws {ajaxError}
  */
 export async function callUnbind(event, handler, auth_type) {
   await init()
@@ -556,6 +581,7 @@ export default {
   refreshAuth,
   callMethod,
   callBatch,
+  callMethodAll,
   callBind,
   callUnbind,
   userOption,
