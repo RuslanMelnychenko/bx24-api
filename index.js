@@ -17,28 +17,26 @@ export const throwOn = (enable) => throwEnable = !!enable;
  * @returns {ajaxResult}
  * @throws ajaxError
  */
-const handlerResult = (result) => {
-  const next = result.next
-  result.next = async function() {
-    if (this.more())
-      return handlerResult(await new Promise(resolve => next.call(this, resolve)))
-    else
-      return false
-  }
+const handlerResult = (mainResult) => {
+  const results =
+            Array.isArray(mainResult) && mainResult
+            || mainResult.constructor.name === 'ajaxResult' && [mainResult]
+            || Object.values(mainResult)
+  for(const result of results) {
+    const next = result.next
+    result.next = async function() {
+      if (this.more())
+        return handlerResult(await new Promise(resolve => next.call(this, resolve)))
+      else
+        return false
+    }
 
-  if (throwEnable) {
-    if (Array.isArray(result)) {
-      let errors = result.filter(r => !!r.error())
-      if (errors.length) {
-        console.error(errors.map(e => e.error()), result)
-        throw result
-      }
-    } else if (!!result.error()) {
+    if(throwEnable && !!result.error()) {
       console.error(result.error(), result)
       throw result.error()
     }
   }
-  return result
+  return mainResult
 }
 
 export const isInit = () => initialized;
