@@ -1,11 +1,12 @@
 {
   "name": "bx24-api",
   "description": "Interface for using official Bitrix JavaScript library",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "main": "index.js",
   "keywords": [
     "bitrix",
     "bitrix24",
+    "bx24",
     "api",
     "library",
     "js",
