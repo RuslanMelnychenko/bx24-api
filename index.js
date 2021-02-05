@@ -165,6 +165,44 @@ export async function callBatch(calls, bHaltOnError) {
 }
 
 /**
+ * Import Large Data Batches
+ * ! Support only methods that have entity "ID", support "filter", "order" and "select"
+ * @param {String} method
+ * @param {Object} [params={}]
+ * @returns {Promise<[Object]>}
+ * @see EN Taken on the basis of {@link https://training.bitrix24.com/rest_help/rest_sum/start.php}
+ * @see RU Taken on the basis of {@link https://dev.1c-bitrix.ru/rest_help/rest_sum/start.php}
+ * @throws {ajaxError}
+ */
+export async function callMethodAll(method, params) {
+  await init()
+  const callParams = {}
+  for (const key in (params || {}))
+    callParams[key.toLowerCase()] = params[key]
+
+  callParams.filter = callParams.filter || {}
+
+  if (Array.isArray(callParams.select) && !(callParams.select.includes('ID') || callParams.select().includes('*')))
+    callParams.select.push('ID')
+
+  callParams.order = callParams.order || {}
+  callParams.order.ID = 'ASC'
+  callParams.start = -1
+  let ID = 0;
+  const globalResult = []
+  while (true) {
+    callParams.filter['>ID'] = ID
+    const result = (await callMethod(method, params)).data()
+    if (!result.length) break;
+    for (const rest of result) {
+      ID = rest.ID
+      globalResult.push(rest)
+    }
+  }
+  return globalResult
+}
+
+/**
  * @param {String} event
  * @param {String} handler
  * @param {Number} [auth_type]
