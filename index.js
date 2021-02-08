@@ -190,7 +190,7 @@ export async function callMethodAll(method, params) {
   const globalResult = []
   while (true) {
     callParams.filter['>ID'] = ID
-    const result = (await callMethod(method, params)).data()
+    const result = (await callMethod(method, callParams)).data()
     if (!result.length) break;
     for (const rest of result) {
       ID = rest.ID
