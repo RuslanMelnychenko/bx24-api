@@ -201,6 +201,23 @@ export async function callMethodAll(method, params) {
 }
 
 /**
+ * Load all items from list by ajaxResult.next()
+ * @param {String} method
+ * @param {Object} [params={}]
+ * @returns {Promise<Array<Object>>}
+ * @throws {ajaxError}
+ */
+export async function callMethodAllChunks(method, params= {}) {
+  let result = await callMethod(method, params)
+  const data = result.data()
+  while (result.more()) {
+    result = await result.next()
+    data.push(...result.data())
+  }
+  return data
+}
+
+/**
  * @param {String} event
  * @param {String} handler
  * @param {Number} [auth_type]
