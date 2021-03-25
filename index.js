@@ -635,6 +635,7 @@ export default {
   callMethod,
   callBatch,
   callMethodAll,
+  callMethodAllChunks,
   callBind,
   callUnbind,
   userOption,
